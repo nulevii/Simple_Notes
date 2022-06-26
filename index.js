@@ -1,11 +1,11 @@
-const Box = document.querySelector('.box');
+const BOX = document.querySelector('.box');
 const DeleteButtons = document.getElementsByClassName('delete-button');
 
-const DeleteMenu = document.querySelector('.delete-overlay');
+const DELETEMENU = document.querySelector('.delete-overlay');
 const CancelButtonDelete = document.querySelector('.cancel-button');
 const OkButtonDelete = document.querySelector('.ok-button');
 
-const CreateMenu = document.querySelector('.create-overlay');
+const CREATEMENU = document.querySelector('.create-overlay');
 const AddElementBox = document.querySelector('.add-element-box');
 const CancelButtonCreate = document.querySelector('.cancel-button-create');
 const OkButtonCreate = document.querySelector('.ok-button-create');
@@ -15,19 +15,18 @@ const CreateError = document.querySelector('.alert-box__header-delete');
 let deletedElement = null;
 
 const deleteMenuAppear = (element) => {
-  DeleteMenu.style.visibility = 'visible';
+  DELETEMENU.style.visibility = 'visible';
   deletedElement = element.target.closest('div');
 };
 
 const popUpMenuDelete = () => {
   deletedElement.remove();
-  DeleteMenu.style.visibility = 'hidden';
+  DELETEMENU.style.visibility = 'hidden';
   deletedElement = null;
 };
 
-const HideDeleteAndCreateMenu = () => {
-  DeleteMenu.style.visibility = 'hidden';
-  CreateMenu.style.visibility = 'hidden';
+const HideDeleteMenu = () => {
+  DELETEMENU.style.visibility = 'hidden';
   deletedElement = null;
 };
 
@@ -38,32 +37,40 @@ const addDeleteListeners = () => {
 };
 
 const createMenuAppear = (element) => {
-  CreateMenu.style.visibility = 'visible';
+  CREATEMENU.style.visibility = 'visible';
   deletedElement = element.target.closest('div');
 };
 
 const createNewElement = () => {
-  console.log(NewTaskName.textContent.length === 0);
   if (NewTaskName.textContent.length === 0) {
     CreateError.textContent = 'You didn\'t enter anything!';
-    return null;
+    return console.error('Please fill in Task Name input field!');
   }
   if (NewTaskName.textContent.length >= 80) {
     CreateError.textContent = 'Task description is too long!';
-    return null;
+    return console.error('Task Name input field is to long!');;
   }
-  const newElement = Box.cloneNode(true);
+  const newElement = BOX.cloneNode(true);
   const TaskName = newElement.querySelector('.box__text');
   TaskName.textContent = NewTaskName.textContent;
   AddElementBox.before(newElement);
-  CreateMenu.style.visibility = 'hidden';
+  CREATEMENU.style.visibility = 'hidden';
+  CreateError.textContent = 'Please enter New Task';
+  NewTaskName.textContent = '';
   addDeleteListeners();
 };
 
+const HideCreateMenu = () => {
+
+  CREATEMENU.style.visibility = 'hidden';
+  CreateError.textContent = 'Please enter New Task';
+  NewTaskName.textContent = '';
+};
+
 OkButtonDelete.addEventListener('click', popUpMenuDelete);
-CancelButtonDelete.addEventListener('click', HideDeleteAndCreateMenu);
+CancelButtonDelete.addEventListener('click', HideDeleteMenu);
 addDeleteListeners();
 
 AddElementBox.addEventListener('click', createMenuAppear);
 OkButtonCreate.addEventListener('click', createNewElement);
-CancelButtonCreate.addEventListener('click', HideDeleteAndCreateMenu);
+CancelButtonCreate.addEventListener('click', HideCreateMenu);
